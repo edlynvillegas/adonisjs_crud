@@ -21,6 +21,7 @@ class NoteController {
         return response.status(200).json({ success: true })
     }
     async modify ({ params, request, response }) {
+        if (!params.id) return response.status(400).json({ message: 'No ID' })
         const note = await Note.find(params.id);
 
         note.title = request.input('title')
