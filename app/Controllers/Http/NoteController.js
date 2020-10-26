@@ -5,7 +5,7 @@ const Note = use('App/Models/Note')
 class NoteController {
     async index ({ response }) {
         // const events = await Event.all()
-        const notes = await Note.all()
+        const notes = await Note.query().orderBy('updated_at', 'asc').fetch()
         console.log('GET NOTES', notes.toJSON())
     
         return response.status(200).json(notes)
