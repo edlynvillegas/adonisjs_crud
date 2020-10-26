@@ -1,11 +1,12 @@
 'use strict'
 
+const moment = use('moment')
 const Note = use('App/Models/Note')
 
 class NoteController {
     async index ({ response }) {
         // const events = await Event.all()
-        const notes = await Note.query().orderBy('updated_at', 'asc').fetch()
+        const notes = await Note.query().orderBy('updated_at', 'desc').fetch()
         console.log('GET NOTES', notes.toJSON())
     
         return response.status(200).json(notes)
@@ -22,10 +23,12 @@ class NoteController {
     }
     async modify ({ params, request, response }) {
         if (!params.id) return response.status(400).json({ message: 'No ID' })
+        const current_time = new Date()
         const note = await Note.find(params.id);
 
         note.title = request.input('title')
         note.note = request.input('note')
+        note.updated_at = current_time
         
         await note.save()
         
